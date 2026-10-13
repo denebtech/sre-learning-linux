@@ -16,7 +16,7 @@ Interfaces between layers:
 
 - Between the kernel and the user land we have the interface called **system calls** or **syscalls** for short.
 
-- Between the kernel and the hardware we have a collection of indivitual interfaces, ussually group by hardward.
+- Between the kernel and the hardware we have a collection of indivitual interfaces, usually group by hardward.
 
 Hardware access modes:
 
@@ -219,5 +219,38 @@ address sizes	: 39 bits physical, 48 bits virtual
 power management:
 ```
 
+### Kernel Components
 
+- **Process management**, such as starting a process based on an executable file or terminate a process.
 
+- **Memory management**, such as allocating memory for a process or map a file into memory.
+
+- **Networking management**, like managing networking interfaces or providing the network stack.
+
+- Filesystems, providing **file management** and supporting the creation and deletion of files.
+
+- **Device management**, from character devices like keyboards, to device drivers.
+
+### Process Management
+
+Concepts:
+
+- A **process** is the user-facing unit, based on an executable binary.
+
+- A **thread** is a unit of execution in the contxt of a process.
+
+- **Multithreading** means that a process has a number of parallel executions going on, potentially running on different CPUs.
+
+Linux units:
+
+- **Sessions.** Identified with a session ID (SID), contain one or more process groups and represents a high-level user-facing unit, with an optional TTY attached.
+
+- **Process groups.** Identified with a process group ID (PGID), contain one or more processes, with at most one process group in a session as the foregroud process group.
+
+- **Processes.** Identified with a process ID (PID), are abtractions that group multiple resources like address space, one or more threads, sockets, and so on.
+
+- **Threads.** Identified with a thread ID (TID) and thread group ID (TGID), are implemented by the kernel as processes. Thread is a process that shares certain resouces (suc as memory or signal handlers) with other processes.
+
+- **Tasks.** All of the aforementioned units are derived and / or anchored in tasks; however, tasks are not exposed as such outside of the kernel.
+
+![Kernel Units](images/kernel_units.png)
