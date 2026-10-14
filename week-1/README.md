@@ -2,7 +2,7 @@
 
 ## Concepts
 
-The Linux kernel is the main component of an operating system. Its main function is to abstract the hardware and provide an API for interacting with it. Programming against this API allows us to write applications without worrying about where and how they are executed.
+The Linux kernel is the main component of an operating system. Its primary function is to abstract the hardware and provide an API for interacting with it. Programming against this API allows us to write applications without worrying about where and how they are executed.
 
 The basic Linux architecture is:
 
@@ -14,19 +14,19 @@ The basic Linux architecture is:
 
 Interfaces between layers:
 
-- Between the kernel and the user land we have the interface called **system calls** or **syscalls** for short.
+- Between the kernel and user space, we have the interface called **system calls** or **syscalls** for short.
 
-- Between the kernel and the hardware we have a collection of indivitual interfaces, usually group by hardward.
+- Between the kernel and the hardware, we have a collection of individual interfaces, usually grouped by hardware.
 
 Hardware access modes:
 
-- **User mode** runs regular applications, with slow execution but safe and more convinient abstractions.
+- **User mode** runs regular applications with slower execution but safer and more convenient abstractions.
 
-- **Kernel mode** runs the core OS with full control over hardware, fast execution and limited abstraction.
+- **Kernel mode** runs the core OS with full control over the hardware, faster execution, and limited abstraction.
 
 **<u>Lab 1.1:</u> Getting hardware information**
 
-- dmidecode to get information about system's components
+- `dmidecode` provides information about the system's components.
 
 ```sh
 ┌──(vagrant㉿kalilinux)-[~]
@@ -115,7 +115,7 @@ Handle 0xFEFF, DMI type 127, 4 bytes
 End Of Table
 ```
 
-- lscpu displays information about CPU architecture. We can get similar information from /proc/cpuinfo.
+- `lscpu` displays information about CPU architecture. We can get similar information from `/proc/cpuinfo`.
 
 ```sh
 [vagrant@almalinux ~]$ lscpu 
@@ -221,36 +221,70 @@ power management:
 
 ### Kernel Components
 
-- **Process management**, such as starting a process based on an executable file or terminate a process.
+- **Process management**, such as starting or terminating a process based on an executable file.
 
-- **Memory management**, such as allocating memory for a process or map a file into memory.
+- **Memory management**, such as allocating memory for a process or mapping a file into memory.
 
-- **Networking management**, like managing networking interfaces or providing the network stack.
+- **Networking management**, such as managing network interfaces or providing the network stack.
 
 - Filesystems, providing **file management** and supporting the creation and deletion of files.
 
-- **Device management**, from character devices like keyboards, to device drivers.
+- **Device management**, from character devices like keyboards to device drivers.
 
 ### Process Management
 
 Concepts:
 
-- A **process** is the user-facing unit, based on an executable binary.
+- A **process** is the user-facing unit based on an executable binary.
 
-- A **thread** is a unit of execution in the contxt of a process.
+- A **thread** is a unit of execution within the context of a process.
 
-- **Multithreading** means that a process has a number of parallel executions going on, potentially running on different CPUs.
+- **Multithreading** means that a process has several parallel executions running at the same time, potentially on different CPUs.
 
 Linux units:
 
-- **Sessions.** Identified with a session ID (SID), contain one or more process groups and represents a high-level user-facing unit, with an optional TTY attached.
+- **Sessions.** Identified with a session ID (SID), they contain one or more process groups and represent a high-level user-facing unit, with an optional TTY attached.
 
-- **Process groups.** Identified with a process group ID (PGID), contain one or more processes, with at most one process group in a session as the foregroud process group.
+- **Process groups.** Identified with a process group ID (PGID), they contain one or more processes, with at most one process group in a session as the foreground process group.
 
-- **Processes.** Identified with a process ID (PID), are abtractions that group multiple resources like address space, one or more threads, sockets, and so on.
+- **Processes.** Identified with a process ID (PID), they are abstractions that group multiple resources such as address space, one or more threads, sockets, and so on.
 
-- **Threads.** Identified with a thread ID (TID) and thread group ID (TGID), are implemented by the kernel as processes. Thread is a process that shares certain resouces (suc as memory or signal handlers) with other processes.
+- **Threads.** Identified with a thread ID (TID) and thread group ID (TGID), they are implemented by the kernel as processes. A thread is a process that shares certain resources (such as memory or signal handlers) with other processes.
 
-- **Tasks.** All of the aforementioned units are derived and / or anchored in tasks; however, tasks are not exposed as such outside of the kernel.
+- **Tasks.** All of the aforementioned units are derived from and/or anchored in tasks; however, tasks are not exposed as such outside the kernel.
 
-![Kernel Units](images/kernel_units.png)
+<p align="center">
+  <img src="images/kernel_units.png" alt="Kernel Units" />
+</p>
+
+**Process creation.** Processes are created using the following system calls:
+
+- `fork()`: Creates a child process that is a copy of the parent process. The child process receives a new PID but inherits the parent's memory, file descriptors, and other attributes.
+
+- `exec()`: Replaces the current process's memory space with a new program. This is often used after `fork()` to run a different program in the child process.
+
+- `clone()`: Similar to `fork()`, but it provides more control over what is shared between the parent and child processes (for example, memory and file descriptors).
+
+**Process states.** A process can be in one of the following states:
+
+- **Running (R):** The process is currently executing. In the running state, each process takes up a CPU core and a portion of volatile memory to execute its code and logic.
+
+- **Sleeping (S):** The process is waiting for an event or resource, such as an I/O operation or resource allocation. If the process must wait for a resource to become available before it can continue, it may enter the **uninterruptible sleep state (D)**.
+
+	For example, when the network is slow or experiencing issues, a process waiting for a network read operation may enter the **uninterruptible sleep state (D)**.
+
+	In contrast, a process that waits for an event or the availability of a resource and can react to that event may enter the **interruptible sleep state (S)**.
+
+	For example, when a process waits for user input, it goes into the **interruptible sleep state (S)**.
+
+- **Stopped (T):** The process has been paused (for example, by a signal such as `SIGSTOP` or `SIGTSTP`). While a process is in the stopped state, it can be resumed and returned to a running state.
+
+- **Zombie (Z):** The process has completed execution, but its entry in the process table remains until the parent reads its exit status. This process is also known as a defunct process.
+
+- **Terminated / Dead (X):** The process has finished execution, released all of its resources, and is no longer present in the process table.
+
+<p align="center">
+  <img src="images/process_states.png" alt="Process states" />
+</p>
+
+
