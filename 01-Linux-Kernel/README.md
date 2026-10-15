@@ -287,4 +287,51 @@ Linux units:
   <img src="images/process_states.png" alt="Process states" />
 </p>
 
+**<u>Lab 1.2:</u> Interacting with processes**
 
+- `ps -ef` list every process on the system using standard syntax with full format:
+
+```sh
+[vagrant@almalinux ~]$ ps -ef | head -15
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 00:58 ?        00:00:00 /usr/lib/systemd/systemd --switched-root --system --deserialize 31
+root           2       0  0 00:58 ?        00:00:00 [kthreadd]
+root           3       2  0 00:58 ?        00:00:00 [pool_workqueue_]
+root           4       2  0 00:58 ?        00:00:00 [kworker/R-rcu_g]
+root           5       2  0 00:58 ?        00:00:00 [kworker/R-sync_]
+root           6       2  0 00:58 ?        00:00:00 [kworker/R-slub_]
+root           7       2  0 00:58 ?        00:00:00 [kworker/R-netns]
+root           9       2  0 00:58 ?        00:00:00 [kworker/0:0H-events_highpri]
+root          10       2  0 00:58 ?        00:00:00 [kworker/u8:0-events_unbound]
+root          11       2  0 00:58 ?        00:00:00 [kworker/R-mm_pe]
+root          12       2  0 00:58 ?        00:00:00 [kworker/u8:1-netns]
+root          13       2  0 00:58 ?        00:00:00 [rcu_tasks_kthre]
+root          14       2  0 00:58 ?        00:00:00 [rcu_tasks_rude_]
+root          15       2  0 00:58 ?        00:00:00 [rcu_tasks_trace]
+```
+
+Process with **PID 1** represents the **init process**.
+
+- `top` and `htop` display information about the running processes in real-time, and additional information about the system such load average, uptime, total process by state, cpu and memory usage.
+
+```sh
+top - 21:20:21 up 20 min,  1 user,  load average: 0.08, 0.12, 0.05
+Tasks: 138 total,   1 running, 137 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  1.5 us,  1.0 sy,  0.0 ni, 97.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :   1971.7 total,    784.2 free,    439.9 used,    906.5 buff/cache 
+MiB Swap:    953.7 total,    953.7 free,      0.0 used.   1531.8 avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+      1 root      20   0   24512  15936  11448 S   0.3   0.8   0:01.52 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.00 kthreadd
+      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_workqueue_release
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-rcu_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-sync_wq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-kvfree_rcu_reclaim
+      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-slub_flushwq
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-netns
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     11 root      20   0       0      0      0 I   0.0   0.0   0:00.26 kworker/0:1-ata_sff
+```
+
+![htop command](./images/htop_command.png)

@@ -2,7 +2,7 @@
 
 ## Topics
 
-- [Week 1 - The Linux Kernel](./week-1/README.md)
+- [01 - The Linux Kernel](./01-Linux-Kernel/README.md)
 
 ## Lab
 
