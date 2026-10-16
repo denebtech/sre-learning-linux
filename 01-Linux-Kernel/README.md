@@ -335,3 +335,40 @@ MiB Swap:    953.7 total,    953.7 free,      0.0 used.   1531.8 avail Mem
 ```
 
 ![htop command](./images/htop_command.png)
+
+### Memory Management
+
+- Linux memory management subsystem is responsible, as the name implies, for managing the memory in the system. This includes implementation of virtual memory and demand paging, memory allocation both for kernel internal structures and user space programs, mapping of files into processes address space and many other cool things.
+
+- Physical memory and virtual memory are divided into fixed-length chucks we called pages.
+
+- Multiple virtual pages can point to the same physical page via their respective process-level page table. This is, in a sense, the core of memory management is how to effectively provide each process with the illusion that is page actually exists in RAM memory while using the existing space optimally.
+
+- Linux memory management is a complex system with many configurable settings. Most of these settings are available via `/proc` filesystem and can be queried and adjusted using `sysctl`.
+
+**<u>Lab 1.3:</u> Memory management**
+
+In orden to get information about memory, we can view the `/proc/meminfo` file.
+
+```sh
+┌──(vagrant㉿kalilinux)-[~]
+└─$ sudo head -15 /proc/meminfo
+MemTotal:        2019036 kB
+MemFree:         1219180 kB
+MemAvailable:    1605428 kB
+Buffers:           28016 kB
+Cached:           483216 kB
+SwapCached:            0 kB
+Active:           574672 kB
+Inactive:          70420 kB
+Active(anon):     138988 kB
+Inactive(anon):        0 kB
+Active(file):     435684 kB
+Inactive(file):    70420 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:        976556 kB
+```
+
+
+
