@@ -370,5 +370,31 @@ Mlocked:               0 kB
 SwapTotal:        976556 kB
 ```
 
+With command `free -h` we get used memory and free memory in the system human readable:
+
+```sh
+┌──(vagrant㉿kalilinux)-[~]
+└─$ free -h 
+               total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       440Mi       948Mi       5.2Mi       755Mi       1.5Gi
+Swap:          953Mi          0B       953Mi
+```
+
+Tip with `ps` command to get top 10 processes with more memory consuming:
+
+```sh
+┌──(vagrant㉿kalilinux)-[~]
+└─$ ps aux --sort=-%mem | head -n 10
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root        1972  0.0  5.3 405712 107016 tty7    Ssl+ 21:02   0:00 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+lightdm     2114  0.0  4.8 1233032 98600 ?       Ssl  21:02   0:00 /usr/sbin/lightdm-gtk-greeter
+root         599  0.0  0.8 336668 17496 ?        Ssl  21:02   0:00 /usr/sbin/NetworkManager --no-daemon
+root         311  0.0  0.8  50396 16280 ?        Ss   21:02   0:00 /usr/lib/systemd/systemd-journald
+root           1  0.1  0.7  24524 15460 ?        Ss   21:02   0:01 /usr/lib/systemd/systemd --system --deserialize=141 splash
+lightdm     2110  0.0  0.6 481572 14000 ?        S<sl 21:02   0:00 /usr/bin/wireplumber
+lightdm     2039  0.0  0.6  22804 13316 ?        Ss   21:02   0:00 /usr/lib/systemd/systemd --user --deserialize=30
+vagrant     2661  0.0  0.6  22684 13240 ?        Ss   21:03   0:00 /usr/lib/systemd/systemd --user --deserialize=30
+root         346  0.0  0.6  38812 12700 ?        Ss   21:02   0:00 /usr/lib/systemd/systemd-udevd
+```
 
 
