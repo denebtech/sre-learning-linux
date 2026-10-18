@@ -346,6 +346,11 @@ MiB Swap:    953.7 total,    953.7 free,      0.0 used.   1531.8 avail Mem
 
 - Linux memory management is a complex system with many configurable settings. Most of these settings are available via `/proc` filesystem and can be queried and adjusted using `sysctl`.
 
+<p align="center">
+  <img src="images/memory_management.png" alt="Process states" />
+</p>
+
+
 **<u>Lab 1.3:</u> Memory management**
 
 In orden to get information about memory, we can view the `/proc/meminfo` file.
@@ -397,4 +402,28 @@ vagrant     2661  0.0  0.6  22684 13240 ?        Ss   21:03   0:00 /usr/lib/syst
 root         346  0.0  0.6  38812 12700 ?        Ss   21:02   0:00 /usr/lib/systemd/systemd-udevd
 ```
 
+### Networking
+
+The linux network stack follow a layered architecture:
+
+- **Sockets.** For abstracting communication.
+
+- **Transmission Control Protocol (TCP) and User Datagram Protocol (UDP).** For connection oriented communication and connectioless communication, respectively.
+
+- **Internet Protocol (IP).** For addressing machines.
+
+#### OSI Layer model
+
+The OSI (Open Systems Interconnection) Model is a conceptual framework created by the International Organization for Standardization (ISO) to describe how data is transmitted across a network using a structured seven-layer architecture.
+
+
+| Layer | Working | Protocol Data Unit (PDU) | Protocols |
+| --- | --- | --- | --- |
+| Physical Layer | Establishes physical connection between devices and transmits raw bits over the medium. | Bits | USB, SONET/SDH |
+| Data Link Layer | Provides node-to-node delivery and error detection/correction. | Frames | Ethernet, PPP, PPTP |
+| Network Layer | Handles logical addressing and routing of data between different networks. | Packets | IP, ICMP, IGMP, OSPF |
+| Transport Layer | Ensures end-to-end communication, segmentation, flow control, and error handling. | Segments (TCP) / Datagrams (UDP) | TCP, UDP, SCTP |
+| Session Layer | Establishes, manages, and terminates communication sessions between applications. | Data | RPC |
+| Presentation Layer | Translates, encrypts, and formats data for the application layer. | Data | TLS/SSL, MIME |
+| Application Layer | Provides network services directly to end-user applications. | Data | FTP, SMTP, DNS, DHCP, NetBIOS |
 
