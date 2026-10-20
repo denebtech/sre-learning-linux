@@ -350,7 +350,6 @@ MiB Swap:    953.7 total,    953.7 free,      0.0 used.   1531.8 avail Mem
   <img src="images/memory_management.png" alt="Process states" />
 </p>
 
-
 **<u>Lab 1.3:</u> Memory management**
 
 In orden to get information about memory, we can view the `/proc/meminfo` file.
@@ -427,3 +426,43 @@ The OSI (Open Systems Interconnection) Model is a conceptual framework created b
 | Presentation Layer | Translates, encrypts, and formats data for the application layer. | Data | TLS/SSL, MIME |
 | Application Layer | Provides network services directly to end-user applications. | Data | FTP, SMTP, DNS, DHCP, NetBIOS |
 
+<p align="center">
+  <img src="images/osi_model.png" alt="Process states" />
+</p>
+
+### Filesystem
+
+- Linux uses filesystems to organize files and directories on storage devices (HDD disk, SSD disk, flash memory). Some types of filesystems:
+
+  - ext4
+  - NTFS
+  - btrfs
+
+- **Virtual File System (VFS).** Linux manages to provide a file-like access to many sorts of resources (in memory, locally attached, or networked storage) through an abstraction called _virtual file system_. 
+
+- **VFS** was originally introduced to support multiple filesystem types and instances. The highest layer in VFS provides a common API abstraction of functions such as open, close, read, and write. At the bottom of VFS are filesystem abstractions called plug-ins for the given filesystem.
+
+<p align="center">
+  <img src="images/linux_vfs.png" alt="Process states" />
+</p>
+
+**<u>Lab 1.4:</u> Filesystem**
+
+- We can check file system space usage with `df` command
+
+```sh
+┌──(vagrant㉿kalilinux)-[~]
+└─$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            883M     0  883M   0% /dev
+tmpfs           198M  964K  197M   1% /run
+/dev/sda1        79G   16G   59G  22% /
+tmpfs           986M  4.0K  986M   1% /dev/shm
+none            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+none            1.0M     0  1.0M   0% /run/credentials/systemd-networkd.service
+tmpfs           986M  4.0K  986M   1% /tmp
+vagrant         879G  521G  359G  60% /vagrant
+none            1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+tmpfs           198M  100K  198M   1% /run/user/106
+tmpfs           198M  100K  198M   1% /run/user/1000
+```
