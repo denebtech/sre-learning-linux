@@ -312,7 +312,7 @@ root          15       2  0 00:58 ?        00:00:00 [rcu_tasks_trace]
 
 Process with **PID 1** represents the **init process**.
 
-- `top` and `htop` display information about the running processes in real-time, and additional information about the system such load average, uptime, total process by state, cpu and memory usage.
+- `top` and `htop` display information about the running processes in real time, as well as additional system details such as load average, uptime, total processes by state, CPU usage, and memory usage.
 
 ```sh
 top - 21:20:21 up 20 min,  1 user,  load average: 0.08, 0.12, 0.05
@@ -338,13 +338,13 @@ MiB Swap:    953.7 total,    953.7 free,      0.0 used.   1531.8 avail Mem
 
 ### Memory Management
 
-- Linux memory management subsystem is responsible, as the name implies, for managing the memory in the system. This includes implementation of virtual memory and demand paging, memory allocation both for kernel internal structures and user space programs, mapping of files into processes address space and many other cool things.
+- The Linux memory management subsystem is responsible, as the name implies, for managing system memory. This includes implementing virtual memory and demand paging, allocating memory for kernel internal structures and user-space programs, mapping files into a process's address space, and many other tasks.
 
-- Physical memory and virtual memory are divided into fixed-length chucks we called pages.
+- Physical memory and virtual memory are divided into fixed-length chunks called pages.
 
-- Multiple virtual pages can point to the same physical page via their respective process-level page table. This is, in a sense, the core of memory management is how to effectively provide each process with the illusion that is page actually exists in RAM memory while using the existing space optimally.
+- Multiple virtual pages can point to the same physical page via their respective process-level page tables. In a sense, the core of memory management is how to effectively provide each process with the illusion that a page actually exists in RAM while using the available space efficiently.
 
-- Linux memory management is a complex system with many configurable settings. Most of these settings are available via `/proc` filesystem and can be queried and adjusted using `sysctl`.
+- Linux memory management is a complex system with many configurable settings. Most of these settings are available via the `/proc` filesystem and can be queried and adjusted using `sysctl`.
 
 <p align="center">
   <img src="images/memory_management.png" alt="Process states" />
@@ -352,7 +352,7 @@ MiB Swap:    953.7 total,    953.7 free,      0.0 used.   1531.8 avail Mem
 
 **<u>Lab 1.3:</u> Memory management**
 
-In orden to get information about memory, we can view the `/proc/meminfo` file.
+In order to get information about memory, we can view the `/proc/meminfo` file.
 
 ```sh
 ┌──(vagrant㉿kalilinux)-[~]
@@ -374,7 +374,7 @@ Mlocked:               0 kB
 SwapTotal:        976556 kB
 ```
 
-With command `free -h` we get used memory and free memory in the system human readable:
+With the `free -h` command, we can see used and free memory in the system in a human-readable format:
 
 ```sh
 ┌──(vagrant㉿kalilinux)-[~]
@@ -384,7 +384,7 @@ Mem:           1.9Gi       440Mi       948Mi       5.2Mi       755Mi       1.5Gi
 Swap:          953Mi          0B       953Mi
 ```
 
-Tip with `ps` command to get top 10 processes with more memory consuming:
+Tip: use the `ps` command to show the top 10 processes by memory usage:
 
 ```sh
 ┌──(vagrant㉿kalilinux)-[~]
@@ -403,13 +403,13 @@ root         346  0.0  0.6  38812 12700 ?        Ss   21:02   0:00 /usr/lib/syst
 
 ### Networking
 
-The linux network stack follow a layered architecture:
+The Linux network stack follows a layered architecture:
 
-- **Sockets.** For abstracting communication.
+- **Sockets.** Used to abstract communication.
 
-- **Transmission Control Protocol (TCP) and User Datagram Protocol (UDP).** For connection oriented communication and connectioless communication, respectively.
+- **Transmission Control Protocol (TCP) and User Datagram Protocol (UDP).** Used for connection-oriented and connectionless communication, respectively.
 
-- **Internet Protocol (IP).** For addressing machines.
+- **Internet Protocol (IP).** Used for addressing machines.
 
 #### OSI Layer model
 
@@ -448,7 +448,7 @@ The OSI (Open Systems Interconnection) Model is a conceptual framework created b
 
 **<u>Lab 1.4:</u> Filesystem**
 
-- We can check file system space usage with `df` command
+- We can check filesystem space usage with the `df` command.
 
 ```sh
 ┌──(vagrant㉿kalilinux)-[~]
@@ -466,3 +466,56 @@ none            1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
 tmpfs           198M  100K  198M   1% /run/user/106
 tmpfs           198M  100K  198M   1% /run/user/1000
 ```
+
+### Device Drivers
+
+A **driver** is a bit of code that runs in the kernel. Its job is to manage a device, which can be actual hardware or a pseudo-device such as a pseudo-terminal under `/dev/pts`.
+
+The driver may be built statically into the kernel, or it can be built as a kernel module (dynamically loaded when needed).
+
+**<u>Lab 1.5:</u> Exploring devices**
+
+List the devices in the **/sys/devices** directory.
+
+```sh
+┌──(vagrant㉿kalilinux)-[~]
+└─$ ls /sys/devices
+LNXSYSTM:00  breakpoint  faux  isa  kprobe  msr  pci0000:00  platform  pnp0  power  software  system  tracepoint  uprobe  virtual
+```
+
+List mounted devices with the **mount** command.
+
+```sh
+┌──(vagrant㉿kalilinux)-[~]
+└─$ mount 
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+udev on /dev type devtmpfs (rw,nosuid,relatime,size=903648k,nr_inodes=225912,mode=755,inode64)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=600,ptmxmode=000)
+tmpfs on /run type tmpfs (rw,nosuid,nodev,noexec,relatime,size=201904k,mode=755,inode64)
+/dev/sda1 on / type ext4 (rw,relatime,errors=remount-ro)
+securityfs on /sys/kernel/security type securityfs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,inode64)
+cgroup2 on /sys/fs/cgroup type cgroup2 (rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot,memory_hugetlb_accounting)
+none on /sys/fs/pstore type pstore (rw,nosuid,nodev,noexec,relatime)
+bpf on /sys/fs/bpf type bpf (rw,nosuid,nodev,noexec,relatime,mode=700)
+systemd-1 on /proc/sys/fs/binfmt_misc type autofs (rw,relatime,fd=41,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=5606)
+tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
+debugfs on /sys/kernel/debug type debugfs (rw,nosuid,nodev,noexec,relatime)
+hugetlbfs on /dev/hugepages type hugetlbfs (rw,nosuid,nodev,relatime,pagesize=2M)
+mqueue on /dev/mqueue type mqueue (rw,nosuid,nodev,noexec,relatime)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,nosuid,nodev,noexec,relatime)
+none on /run/credentials/systemd-journald.service type tmpfs (ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap)
+configfs on /sys/kernel/config type configfs (rw,nosuid,nodev,noexec,relatime)
+none on /run/credentials/systemd-networkd.service type tmpfs (ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap)
+tmpfs on /tmp type tmpfs (rw,nosuid,nodev,size=1009520k,nr_inodes=1048576,inode64)
+binfmt_misc on /proc/sys/fs/binfmt_misc type binfmt_misc (rw,nosuid,nodev,noexec,relatime)
+sunrpc on /run/rpc_pipefs type rpc_pipefs (rw,relatime)
+vagrant on /vagrant type vboxsf (rw,nodev,relatime)
+none on /run/credentials/getty@tty1.service type tmpfs (ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap)
+tmpfs on /run/user/106 type tmpfs (rw,nosuid,nodev,relatime,size=201900k,nr_inodes=50475,mode=700,uid=106,gid=107,inode64)
+gvfsd-fuse on /run/user/106/gvfs type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime,user_id=106,group_id=107)
+tmpfs on /run/user/1000 type tmpfs (rw,nosuid,nodev,relatime,size=201900k,nr_inodes=50475,mode=700,uid=1000,gid=1000,inode64)
+vagrant on /vagrant type vboxsf (rw,nodev,relatime,_netdev)
+```
+
